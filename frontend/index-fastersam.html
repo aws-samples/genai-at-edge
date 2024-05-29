@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenAI @ Edge</title>
+    <style>
+        /* Center the video frame */
+        #video-container {
+            text-align: center;
+        }
+        /* Adjust the width of the video frame */
+        #video-frame {
+            /* max-width: 100%; */
+            /* height: auto; */
+            height: 320px;
+        }
+        /* Adjust layout for text input and captured frame */
+        #chat-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px 0;
+        }
+        /* Style for captured frame */
+        #captured-frame {
+            /* width: 20%; */
+            border: 1px solid #000;
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensure border width is included in width */
+            margin-top: 10px;
+            height: 400px;
+        }
+        #captured-frame-output {
+            /* width: 40%; */
+            border: 2px solid #000;
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensure border width is included in width */
+            margin-left: 10px;
+            margin-top: 10px;
+            overflow-y: auto;
+            height: 480px;
+            padding: 5px;
+        }
+        #text-container {
+            max-width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Style for text input */
+        #data-input {
+            width: 50%;
+            border: 1px solid #000;
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensure border width is included in width */
+            margin-top: 50px;
+            align-content: center;
+            left: 50%;
+            transform: translateX(-50%);
+            position: absolute;
+            height: 40px;
+            font-size: 30px;
+        }
+        /* Capture and Reset buttons */
+        #capture-reset-button {
+            width: 200px;
+            height: 50px;
+            font-size: 24px;
+        }
+        /* Send button style */
+        #send-button {
+            width: 200px;
+            height: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            position: absolute;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        /* Your existing CSS styles here */
+        #status-indicator {
+            width: 250px;
+            height: 50px;
+            border: 2px solid black;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <h1>GenAI @ Edge: FasterSAM</h1>
+        <img id="video-frame" src="placeholder.jpg" alt="Video Frame">
+        <br>
+        <button onclick="captureFrame()" id="capture-reset-button">Capture</button>
+        <button onclick="resetStream()" id="capture-reset-button">Reset</button>
+    </div>
+
+    <div id="chat-container">
+        <img id="captured-frame" src="placeholder.jpg" alt="Captured Frame will appear here.">
+        <img id="captured-frame-output" src="placeholder.jpg" alt="Captured Frame will appear here.">
+    </div>
+    <div id="text-container">
+        <input type="text" id="data-input" placeholder="Enter data...">
+    </div>
+    <br>
+    <button id="send-button" onclick="sendData()">Send</button>
+    <div id="status-indicator">Capture to Start</div>
+
+    <script>
+        var baseApiUrl = "API GATEWAY URL PLACEHOLDER";
+        // API Gateway endpoint URL
+        const apiUrlMqtt = baseApiUrl + "/mqtt";
+        const apiUrlVideo = baseApiUrl + "/video";
+
+        var apiGwHeaders = {
+                    'Content-Type': 'application/json'
+                };
+
+        // Function to update status indicator
+        function updateStatusIndicator(statusText, color) {
+            const statusIndicator = document.getElementById('status-indicator');
+            statusIndicator.textContent = statusText;
+            statusIndicator.style.backgroundColor = color;
+        }
+        updateStatusIndicator('Capture to Start', 'white');
+
+        // // Function to set the height of the data input field to match the captured frame
+        // function setTextInputHeight() {
+        //     const capturedFrameHeight = document.getElementById('captured-frame').clientHeight;
+        //     document.getElementById('captured-frame-output').style.height = capturedFrameHeight + 'px';
+        //     // Get the width of the window
+        //     const windowWidth = window.innerWidth;
+        //     // Get the width of the data input
+        //     const dataInputWidth = document.getElementById('captured-frame-output').offsetWidth;
+        // }
+        // // Call setTextInputHeight initially and on window resize
+        // window.onload = setTextInputHeight;
+        // window.onresize = setTextInputHeight;
+
+        // Function to fetch and display the latest image
+        function fetchAndDisplayLatestImage() {
+            // Fetch the latest image from the API endpoint
+            fetch(apiUrlVideo)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.statusCode === 200) {
+                        // Update the image source with the base64-encoded image data
+                        document.getElementById('video-frame').src = 'data:image/jpeg;base64,' + data.body;
+                    } else {
+                        console.error('Error:', data.body);
+                    }
+                })
+                .catch(error => console.error('Error fetching image:', error));
+        }
+
+        // Call fetchAndDisplayLatestImage initially
+        fetchAndDisplayLatestImage();
+
+        // Set up interval to fetch and update the image every second (adjust interval as needed)
+        setInterval(fetchAndDisplayLatestImage, 200); // 1000 milliseconds = 1 second
+
+        // Function to capture the current frame
+        function captureFrame() {
+            // Add your logic for capturing the frame here
+            const videoFrame = document.getElementById('video-frame');
+            // const capturedFrame = document.getElementById('captured-frame');
+            // capturedFrame.src = videoFrame.src;
+            var data = {
+                event: "capture",
+                type: "fastersam"
+            }
+
+            // Invoke CAPTURE
+            fetch(apiUrlMqtt, {
+                method: 'POST',
+                headers: apiGwHeaders,
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('CAPTURE sent successfully!')
+                document.getElementById('captured-frame').src = 'data:image/jpeg;base64,' + data.body;
+                updateStatusIndicator('CAPTURE: Completed', 'cyan');
+            })
+            .catch(error => console.error('Error sending data:', error));
+        }
+        // Function to reset the stream
+        function resetStream() {
+            // Add your logic for resetting the stream here
+            console.log('Stream reset!');
+            var data = {
+                event: "reset",
+                type: "fastersam"
+            }
+
+            // Invoke RESET
+            fetch(apiUrlMqtt, {
+                method: 'POST',
+                headers: apiGwHeaders,
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                console.log('RESET sent successfully!');
+                const capturedFrame = document.getElementById('captured-frame');
+                capturedFrame.src = 'placeholder.jpg';
+                const capturedFrameOutput = document.getElementById('captured-frame-output');
+                capturedFrameOutput.src = 'placeholder.jpg';
+                document.getElementById("data-input").value = "";
+                updateStatusIndicator('RESET: Capture to Start', 'white');
+                // setTextInputHeight();
+            })
+            .catch(error => console.error('Error sending data:', error));
+        }
+
+        // Function to send data via API Gateway
+        function sendData() {
+            // Add your logic for sending data via API Gateway here
+            updateStatusIndicator('FasterSAM: Waiting for response', 'yellow');
+            const inputData = document.getElementById('data-input').value;
+            console.log('Data sent:', inputData);
+            var data = {
+                event: "text",
+                text: inputData,
+                type: "fastersam"
+            }
+
+            // Example of invoking an API Gateway endpoint without expecting a response
+            // Replace the URL with your actual API Gateway endpoint
+            fetch(apiUrlMqtt, {
+                method: 'POST',
+                headers: apiGwHeaders,
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('TEXT sent successfully!');
+                if (data.statusCode === 200) {
+                    // Update the image source with the base64-encoded image data
+                    document.getElementById('captured-frame-output').src = 'data:image/jpeg;base64,' + data.body;
+                    console.log('IMAGE received successfully!');
+                    updateStatusIndicator('FasterSAM: Response received', 'lightgreen');
+                    document.getElementById("data-input").value = "";
+                } else {
+                    console.error('Error:', data.body);
+                }
+            })
+            .catch(error => console.error('Error fetching image:', error));
+        }
+    </script>
+</body>
+</html>
