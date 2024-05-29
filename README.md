@@ -76,8 +76,8 @@ Follow these steps after edge device is provisioned for AWS IoT GreengrassV2:
         ```
 6. Responses from the AWS IoT Core MQTT Client can be received and executed as required. For example, AWS IoT Rule can be used to redirect responses through AWS Lambda for visualization of results through an API GateWay connected to a Frontend UI. Examples of FrontEnd UI are shown [here](frontend).
     <p align="center">
-    <img src="assets/index-nanovlm.png" alt="NanoVLM Frontend UI" width="320" style="border:2px solid black; margin-right: 10px;">
-    <img src="assets/index-fastersam.png" alt="FasterSAM Frontend UI" width="320" style="border:2px solid black;">
+        <img src="assets/index-nanovlm.png" alt="NanoVLM Frontend UI" width="320" style="border:2px solid black; margin-right: 10px;">
+        <img src="assets/index-fastersam.png" alt="FasterSAM Frontend UI" width="320" style="border:2px solid black;">
     </p>
 
 ---
@@ -138,6 +138,11 @@ Follow these steps after edge device is provisioned for AWS IoT GreengrassV2:
     ```
 
 ---
+
+## Performance Evaluation between NVIDIA Jetson Orin 64GB and NVIDIA A10G 24GB:
+<p align="center">
+    <img src="assets/PerformanceEvaluation.png" alt="Performance Evaluation" width="640">
+</p>
 
 ## Acknowledgment
 This project is loosely based on Jetson Tutorials for GenAI like:
