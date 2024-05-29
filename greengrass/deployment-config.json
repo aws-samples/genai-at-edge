@@ -1,0 +1,15 @@
+{
+  "targetArn": "THING_ARN",
+  "deploymentName": "DEV_IOT_THING_GROUP",
+  "components": {
+    "com.aws.edge.genai": {
+      "componentVersion": "0.0.0",
+      "configurationUpdate": {
+        "merge": ""
+      }
+    },
+    "com.aws.jetson.docker": {
+      "componentVersion": "0.0.0"
+    }
+  }
+}

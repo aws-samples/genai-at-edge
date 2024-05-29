@@ -1,0 +1,38 @@
+{
+  "RecipeFormatVersion": "2020-01-25",
+  "ComponentName": "{COMPONENT_NAME}",
+  "ComponentVersion": "{COMPONENT_VERSION}",
+  "ComponentDescription": "Jetson Docker Component",
+  "ComponentPublisher": "AWS Samples",
+  "ComponentDependencies": {
+    "aws.greengrass.DockerApplicationManager": {
+      "VersionRequirement": "~2.0.0"
+    },
+    "aws.greengrass.TokenExchangeService": {
+      "VersionRequirement": "~2.0.0"
+    }
+  },
+  "Manifests": [
+    {
+      "Platform": {
+        "os": "linux",
+        "architecture": "aarch64"
+      },
+      "Lifecycle": {
+        "Run": {
+          "Script": "docker run --runtime nvidia --rm --network host -p 65432:65432 348657513258.dkr.ecr.us-east-1.amazonaws.com/genai-jetson:latest python3 /opt/genai-jetson/main.py",
+          "RequiresPrivilege": "true"
+        },
+        "Shutdown": {
+          "Script": "docker ps -a | grep 348657513258.dkr.ecr.us-east-1.amazonaws.com/genai-jetson:latest | awk '{print }' | xargs -r docker stop && docker ps -a | grep 348657513258.dkr.ecr.us-east-1.amazonaws.com/genai-jetson:latest | awk '{print }' | xargs -r docker rm",
+          "RequiresPrivilege": "true"
+        }
+      },
+      "Artifacts": [
+        {
+          "URI": "docker:348657513258.dkr.ecr.us-east-1.amazonaws.com/genai-jetson:latest"
+        }
+      ]
+    }
+  ]
+}

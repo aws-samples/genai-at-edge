@@ -1,0 +1,16 @@
+{
+  "component": {
+    "com.aws.edge.genai": {
+      "author": "EdgeGenAI",
+      "version": "0.0.0",
+      "build": {
+        "build_system": "zip"
+      },
+      "publish": {
+        "bucket": "ggv2artifacts",
+        "region": "AWS_REGION"
+      }
+    }
+  },
+  "gdk_version": "1.0.0"
+}
