@@ -1,0 +1,18 @@
+FROM dustynv/nano_llm:r36.2.0
+
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=all
+ENV CUDA_HOME="/usr/local/cuda"
+ENV PATH="/usr/local/cuda/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/cuda/compat:/usr/local/cuda/lib64:${LD_LIBRARY_PATH}"
+
+RUN mkdir -p /opt/genai-jetson
+COPY requirements.txt /opt/genai-jetson/.
+COPY images /opt/genai-jetson/.
+COPY nano_llm /opt/genai-jetson/nano_llm
+COPY faster_sam /opt/genai-jetson/faster_sam
+COPY download_models.py /opt/genai-jetson/.
+COPY main.py /opt/genai-jetson/.
+COPY models.py /opt/genai-jetson/.
+RUN pip3 install -r /opt/genai-jetson/requirements.txt --no-deps
+RUN python3 /opt/genai-jetson/download_models.py
