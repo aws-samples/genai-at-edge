@@ -153,7 +153,7 @@ MIT-0
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
-This library is licensed under the MIT-0 License. See the LICENSE file.
+This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) file.
 
 ## Contributors
 - [Romil Shah](mailto:rpshah@amazon.com)
