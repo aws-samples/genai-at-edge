@@ -1,0 +1,3 @@
+ultralytics==8.2.2
+pycuda
+numpy==1.23.0
