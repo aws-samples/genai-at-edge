@@ -1,0 +1,23 @@
+# Python Files
+*.pyc
+__pycache__/
+.pkl_memoize_py/*
+
+# Greengrass files
+**zip-build
+**greengrass-build
+
+# MacOS Files
+.DS_Store
+
+# Architecture files
+*.drawio
+
+# Ignore CDK build output
+cdk.out/
+cdk.context.json
+cdk-assets.json
+asset-output/
+cdk.out/
+venv/
+node_modules/
