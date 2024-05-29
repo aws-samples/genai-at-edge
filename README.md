@@ -156,5 +156,5 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 This library is licensed under the MIT-0 License. See the LICENSE file.
 
 ## Contributors
-[Romil Shah](mailto:rpshah@amazon.com)
-[Fabian Benitez-Quiroz](mailto:fabianbq@amazon.com)
+- [Romil Shah](mailto:rpshah@amazon.com)
+- [Fabian Benitez-Quiroz](mailto:fabianbq@amazon.com)
