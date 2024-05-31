@@ -2,6 +2,7 @@
 
 ## Visualization
 The output of the system can be visualized as a locally hosted webpage. This is done using either a HTML webpage or StreamLit solution.
+
 Note: The assumes the AWS Lambda, AWS IoT Rule, Amazon API GateWay are all setup correctly as shown in the [AWS Architecture](../assets/AWSArchitecture.png).
 
 ### 1. HTML Webpage:
