@@ -28,6 +28,9 @@ Note: This is specifically for NVIDIA Jetson like edge devices and have been tes
     - [Setup Local PC or EC2 for docker build and AWS credentials](#how-to-build-jetson-docker-and-host-on-ecr)
     - [Setup Local PC or EC2 for Greengrass CLI](#how-to-buildpublish-greengrassv2-component-and-create-deployment-on-edge-device)
 
+## High Level Diagram
+![HLD](assets/HLD.png)
+The above image shows the overall connection of Jetson device and AWS services for running different GenAI models on edge. Details of the services used and their integration with the edge device is shown below.
 
 ## AWS Architecture
 ![AWSArchitecture](assets/AWSArchitecture.png)
